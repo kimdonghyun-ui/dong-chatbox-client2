@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+
 
 import {ListSubheader} from "@material-ui/core";
 
@@ -15,8 +15,14 @@ import {
   Button,
 } from "@material-ui/core";
 
-import { makeStyles } from "@material-ui/core/styles";
 
+/* redux */
+import { connect } from "react-redux";
+import { rx_authenticated } from "../modules/chats";
+
+import { makeStyles } from "@material-ui/core/styles";
+/* function */
+import { cm_logout } from "../helpers/common";
 // import FriendAdd from "./FriendAdd";
 
 const useStyles = makeStyles((theme) => ({
@@ -82,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Message = ({socket, focusroom, me}) => {
+const Message = ({socket, focusroom, me, rx_authenticated}) => {
     const classes = useStyles();
   const [lists, setList] = useState([]);
 
@@ -121,7 +127,7 @@ const Message = ({socket, focusroom, me}) => {
       <div className={classes.title}>
         {me.username}
         <Button onClick={() => {
-            alert('로그아웃 기능은 없음');
+            cm_logout(rx_authenticated,me);
           }}>로그아웃</Button>
       </div>
       <ListSubheader
@@ -224,13 +230,10 @@ const mapStateToProps = (state) => ({
   // tabindex: state.chats.tabindex
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   rx_authenticated: (val) => {
-//     dispatch(rx_authenticated(val));
-//   },
-//   rx_loading2: (val) => {
-//     dispatch(rx_loading2(val));
-//   },
-// });
+const mapDispatchToProps = (dispatch) => ({
+  rx_authenticated: (val) => {
+    dispatch(rx_authenticated(val));
+  },
+});
 
-export default connect(mapStateToProps, null)(Message);
+export default connect(mapStateToProps, mapDispatchToProps)(Message);

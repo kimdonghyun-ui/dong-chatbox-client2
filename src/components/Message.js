@@ -18,7 +18,7 @@ import {
 
 /* redux */
 import { connect } from "react-redux";
-import { rx_authenticated } from "../modules/chats";
+import { rx_authenticated } from "../modules/members";
 
 import { makeStyles } from "@material-ui/core/styles";
 /* function */

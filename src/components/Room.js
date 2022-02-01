@@ -35,21 +35,25 @@ const Room = ({all_rooms, me, rx_focusroom, socket, focusroom, all_msgs, all_use
             hello.push(me.id)
             cm_roomuser_update(all_rooms,room.id,hello);
 
-            socket.emit('chatting', {
-                roomName: room.id,
-                userName: me.username,
-                msg: "",
-                timestamp: Date.now(),
-                notice: `${me.username}님이 입장하셨습니다.`
-              });
-              focusroom > 0 && socket.emit('leaveRoom',focusroom);
+
+
+          }
+
+
+          focusroom > 0 && socket.emit('leaveRoom',focusroom);
+          setTimeout(() => {
             rx_focusroom(room.id);
             socket.emit('joinRoom', room.id);
+            socket.emit('chatting', {
+              roomName: room.id,
+              userName: me.username,
+              msg: "",
+              timestamp: Date.now(),
+              notice: `${me.username}님이 입장하셨습니다.`
+            });
+          },2000)
 
-          }else{
-            rx_focusroom(room.id);
-          }
-          
+
         };
 
     } 

@@ -78,11 +78,12 @@ const RoomList = ({ socket, btn_logout, all_rooms, me, rx_focusroom, rx_tabindex
       rx_focusroom(room_id);
       rx_focus_msgs(all_rooms_focus.attributes.list);
       rx_tabindex(2);
-      focusroom > 0 && socket.emit('joinRoom', focusroom);
+      // focusroom > 0 && socket.emit('joinRoom', focusroom);
     }else{
       rx_tabindex(2);
     };
 
+    socket.emit('joinRoom', room_id);
 
         // //클릭한 방이 이미 내가 들어가있는 방인경우 else에 탭인덱스만 바꿔주기 (아직안했음)
         // if(room.id !== focusroom){

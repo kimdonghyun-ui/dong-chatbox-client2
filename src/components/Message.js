@@ -99,13 +99,13 @@ const Message = ({socket, focusroom, me, focus_msgs, tabindex, btn_logout}) => {
   }
 
   useEffect(() => {
-    // focusroom > 0 && socket.emit('joinRoom', focusroom);
+    socket.emit('joinRoom', focusroom);
 
     return () => {
       socket.emit('leaveRoom', focusroom);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tabindex]);
+  }, [focusroom]);
 
   useEffect(() => {
     scrollToMyRef();

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 
 import {ListSubheader} from "@material-ui/core";
@@ -88,34 +88,45 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Message = ({socket, focusroom, me, rx_authenticated}) => {
+const Message = ({socket, focusroom, me, rx_authenticated, focus_msgs, tabindex}) => {
     const classes = useStyles();
   const [lists, setList] = useState([]);
 
+  const intervalId = useRef(null);
+
+  function scrollToMyRef() {
+    console.log('scrollToMyRef실행')
+    const scroll =
+      intervalId.current.scrollHeight - intervalId.current.clientHeight;
+    intervalId.current.scrollTo(0, scroll);
+  }
 
 
 
+  useEffect(() => {
+    focusroom > 0 && socket.emit('joinRoom', focusroom);
 
-  // useEffect(() => {
-  //   focusroom > 0 && socket.emit('joinRoom', focusroom);
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [focusroom]);
+    return () => {
+      socket.emit('leaveRoom', focusroom);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabindex]);
 
   useEffect(() => {
 
     
-    socket.on('broadcast', function(msg){
-        setList(lists => [...lists, msg]);
-    console.log('broadcast')
+    // socket.on('broadcast', function(msg){
+    //     setList(lists => [...lists, msg]);
+    // console.log('broadcast')
         
-    });
-
+    // });
+    scrollToMyRef();
 
     return () => {
-      setList([]);
+
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [focus_msgs]);
 
     console.log(lists)
 
@@ -141,9 +152,9 @@ const Message = ({socket, focusroom, me, rx_authenticated}) => {
         채팅방
 
       </ListSubheader>
-      <List className={classes.listBox}>
-        {lists.length > 0 ? (
-          lists.map((data, index) => (
+      <List className={classes.listBox} ref={intervalId}>
+        {focus_msgs.length > 0 ? (
+          focus_msgs.map((data, index) => (
             
 
             <ListItem key={index} className={classes.listBoxItem}>
@@ -224,10 +235,10 @@ const Message = ({socket, focusroom, me, rx_authenticated}) => {
 
 const mapStateToProps = (state) => ({
   focusroom: state.chats.focusroom,
-  me: state.members.me
-
+  me: state.members.me,
+  focus_msgs: state.chats.focus_msgs,
   // me: state.chats.me,
-  // tabindex: state.chats.tabindex
+  tabindex: state.chats.tabindex
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -5,8 +5,8 @@ import axios from "axios";
 import io from "socket.io-client";
 
 
-// export const socket = io.connect("http://localhost:4001");
-export const socket = io.connect("https://dong-chatbox-server2.herokuapp.com");
+export const socket = io.connect("http://localhost:4001");
+// export const socket = io.connect("https://dong-chatbox-server2.herokuapp.com");
 
 // const api_url = "http://localhost:1337/";
 const api_url = "https://dongdong-api.herokuapp.com/";
@@ -185,27 +185,7 @@ export const cm_all_msgs = async () => {
   }
 }
 // //##########################################################
-// //##########################################################
-// //########### 메시지 업데이트(입력하고 전송 날리는거) ################
-// //##########################################################
-// export const cm_msgs_update = async (new_msgs,id,all_msgs) => {
-//   try {
-//     await axios.put(api_url+'api/msglists/'+id, {
-//       "data":
-//       {
-//         "list":new_msgs
-//       }
-//     });
 
-//     // console.log('cm_msgs_update 소켓에 알리기',data.data)
-//     socket.emit('all_msgs', all_msgs);
-//   } catch (e) {
-//     console.log('cm_msgs_update 실패');
-//     console.log(e);
-//     console.log('cm_msgs_update 실패');
-//   }
-// }
-// //##########################################################
 
 
 
@@ -290,28 +270,7 @@ export const cm_room_remove = async (id,all_rooms,all_msgs, focusroom) => {
 //##########################################################
 //########### 내 룸 개설 ################
 //##########################################################
-//newRoom 과 newMsg는 세트로서  새방 데이터 쌓을때 같은급 새메시지 데이터도 쌓는다.
-//########### newMsg api서버에 새메시지 데이터 post  ################
-const newMsg = async (id,all_msgs) => {
-  console.log('newMsg'+id);
-  try {
-    const { data } = await axios.post(api_url+'api/msglists/', {
-        "data":
-        {
-          "name":id,
-          "list":[]
-        }
-      });
 
-      //위에 api에는 data추가하였지만 socket에도 알려 화면단의 데이터도 최신화 해준다.
-      console.log('메시지묶음도 추가 성공');
-      all_msgs.push(data.data);
-      socket.emit('all_msgs', all_msgs);
-  } catch (e) {
-    console.log('메시지묶음도 추가 실패'+e);
-  }
-};
-//##########################################################
 //########### newRoom api서버에 새방 데이터 post  ################
 const newRoom = async (me,you,all_rooms,all_msgs,rx_focusroom) => {
   console.log(`me : ${me} / you : ${you}`);
@@ -319,7 +278,8 @@ const newRoom = async (me,you,all_rooms,all_msgs,rx_focusroom) => {
     const { data } = await axios.post(api_url+'api/rooms/', {
       "data":
         {
-          "roomuser":[me,you]
+          "roomuser":[me,you],
+          "list":[]
         }
       });
       //위에 api에는 data추가하였지만 socket에도 알려 화면단의 데이터도 최신화 해준다.
@@ -327,10 +287,8 @@ const newRoom = async (me,you,all_rooms,all_msgs,rx_focusroom) => {
       all_rooms.push(data.data);
       socket.emit('all_rooms', all_rooms);
 
-      //룸 추가시 세트 메시지묶음도 추가
-      newMsg(data.data.id,all_msgs);
       rx_focusroom(data.data.id);
-      socket.emit('joinRoom', data.data.id);
+      // socket.emit('joinRoom', data.data.id);
 
 
   } catch (e) {
@@ -339,7 +297,7 @@ const newRoom = async (me,you,all_rooms,all_msgs,rx_focusroom) => {
 };
 //##########################################################
 //########### cm_room_add 방추가 버튼(이미있는 방인지 아닌지 체크해서 없으면 새방 있으면 있는방 노출)  ################
-export function cm_room_add(me, you, all_rooms, all_msgs, rx_tabindex, rx_focusroom) {
+export function cm_room_add(me, you, all_rooms, all_msgs, rx_tabindex, rx_focusroom, rx_focus_msgs) {
   if(me === you){
     alert('자신과는 대화 할수 없습니다.');
     return
@@ -362,13 +320,18 @@ export function cm_room_add(me, you, all_rooms, all_msgs, rx_tabindex, rx_focusr
 
     //방이 없으니 새방을 만들어준다.
     newRoom(user_arry[0], user_arry[1],all_rooms,all_msgs,rx_focusroom);
+    rx_focus_msgs([]);
     rx_tabindex(2);
   } else {
     console.log("이미 있는 방임");
 
     //방이 있으니 rx_focusroom에 현재 바라보고있는 방 이름만 셋 해주기
     rx_focusroom(clone_allroomlist2[0].id);
-    socket.emit('joinRoom', clone_allroomlist2[0].id);
+    // socket.emit('joinRoom', clone_allroomlist2[0].id);
+    let all_rooms_focus = all_rooms.filter((item) => item.id === clone_allroomlist2[0].id )[0]
+
+
+    rx_focus_msgs(all_rooms_focus.attributes.list)
     rx_tabindex(2);
   };
 }
@@ -407,6 +370,34 @@ export const cm_roomuser_update = async (all_rooms,room_id,new_user) => {
     console.log('cm_roomuser_update 실패');
     console.log(e);
     console.log('cm_roomuser_update 실패');
+  }
+}
+//##########################################################
+
+
+
+        // rx_focus_msgs([...focus_msgs,datas]);
+        //cm_msgs_update(focusroom,rx_focus_msgs,focus_msgs,datas)
+
+//##########################################################
+//########### 메시지 업데이트(입력하고 전송 날리는거) ################
+//##########################################################
+export const cm_msgs_update = async (focusroom,new_msgs) => {
+  try {
+    await axios.put(api_url+'api/rooms/'+focusroom, {
+      "data":
+      {
+        "list":new_msgs
+      }
+    });
+
+    // rx_focus_msgs(new_msgs)
+    // console.log('cm_msgs_update 소켓에 알리기',data.data)
+    socket.emit('chatting', focusroom,new_msgs);
+  } catch (e) {
+    console.log('cm_msgs_update 실패');
+    console.log(e);
+    console.log('cm_msgs_update 실패');
   }
 }
 //##########################################################

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 /* redux */
 import { connect } from "react-redux";
-import { rx_tabindex, rx_focusroom } from "../modules/chats";
+import { rx_tabindex, rx_focusroom, rx_focus_msgs } from "../modules/chats";
 
 /* material-ui */
 
@@ -12,7 +12,7 @@ import { cm_room_add } from "../helpers/common";
 /* components */
 
 
-const FrienList = ({ all_users, me, all_rooms, all_msgs, rx_tabindex, rx_focusroom }) => {
+const FrienList = ({ all_users, me, all_rooms, all_msgs, rx_tabindex, rx_focusroom, rx_focus_msgs }) => {
 
 
     useEffect(() => {
@@ -23,8 +23,9 @@ const FrienList = ({ all_users, me, all_rooms, all_msgs, rx_tabindex, rx_focusro
 
 
       const room_open = (you) => {
-        cm_room_add(me.id, you, all_rooms, all_msgs, rx_tabindex, rx_focusroom);
+        cm_room_add(me.id, you, all_rooms, all_msgs, rx_tabindex, rx_focusroom, rx_focus_msgs);
       }
+
 
 
     return (
@@ -60,6 +61,10 @@ const mapDispatchToProps = (dispatch) => ({
     rx_focusroom: (val) => {
         dispatch(rx_focusroom(val));
     },
+    rx_focus_msgs: (val) => {
+      dispatch(rx_focus_msgs(val));
+  },
+
   })
   
 export default connect(mapStateToProps, mapDispatchToProps)(FrienList);

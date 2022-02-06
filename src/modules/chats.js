@@ -2,6 +2,7 @@ const RX_FOCUSROOM = "menu/RX_FOCUSROOM";
 const RX_TABINDEX = "menu/RX_TABINDEX";
 const RX_ALL_ROOMS = "menu/RX_ALL_ROOMS";
 const RX_ALL_MSGS = "menu/RX_ALL_MSGS";
+const RX_FOCUS_MSGS = "menu/RX_FOCUS_MSGS";
 const RX_LOADING1 = "menu/RX_LOADING1";
 
 
@@ -27,6 +28,11 @@ export const rx_all_msgs = (result) => ({
   result,
 });
 
+export const rx_focus_msgs = (result) => ({
+  type: RX_FOCUS_MSGS,
+  result,
+});
+
 export const rx_loading1 = (result) => ({
   type: RX_LOADING1,
   result,
@@ -38,6 +44,7 @@ export const rx_loading1 = (result) => ({
     tabindex:0,
     all_rooms: [],
     all_msgs:[],
+    focus_msgs:[],
     loading1: false,
 
   };
@@ -65,6 +72,12 @@ export const rx_loading1 = (result) => ({
         return {
           ...state,
           all_msgs: action.result,
+      };
+
+      case RX_FOCUS_MSGS:
+        return {
+          ...state,
+          focus_msgs: action.result,
       };
 
       case RX_LOADING1:

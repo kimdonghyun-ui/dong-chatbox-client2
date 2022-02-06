@@ -7,7 +7,7 @@ import SendIcon from "@material-ui/icons/Send";
 import { Box, Button, TextField } from "@material-ui/core";
 
 /* function */
-// import { cm_msgs_update } from "../helpers/common";
+import { cm_msgs_update } from "../helpers/common";
 
 const useStyles = makeStyles((theme) => ({
   InputBox: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InputBox = ({socket, focusroom, me}) => {
+const InputBox = ({socket, focusroom, me, focus_msgs}) => {
   const classes = useStyles();
  
   const [datas, setData] = useState({
@@ -57,10 +57,10 @@ const InputBox = ({socket, focusroom, me}) => {
     console.log('[표시]InputBox.js',datas)
 
 
-    socket.emit('chatting', datas);
+//    socket.emit('chatting', datas);
+cm_msgs_update(focusroom,[...focus_msgs,datas])
 
-
-    setData({ ...datas, msg: "" });
+    // setData({ ...datas, msg: "" });
   };
 
 
@@ -104,7 +104,8 @@ const InputBox = ({socket, focusroom, me}) => {
 // 
 const mapStateToProps = (state) => ({
   focusroom: state.chats.focusroom,
-  me: state.members.me
+  me: state.members.me,
+  focus_msgs: state.chats.focus_msgs
 });
 
 // const mapDispatchToProps = (dispatch) => ({

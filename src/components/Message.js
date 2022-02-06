@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 
 import {ListSubheader} from "@material-ui/core";
@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Message = ({socket, focusroom, me, rx_authenticated, focus_msgs, tabindex}) => {
     const classes = useStyles();
-  const [lists, setList] = useState([]);
+  // const [lists, setList] = useState([]);
 
   const intervalId = useRef(null);
 
@@ -128,7 +128,7 @@ const Message = ({socket, focusroom, me, rx_authenticated, focus_msgs, tabindex}
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [focus_msgs]);
 
-    console.log(lists)
+    // console.log(lists)
 
 
   return (

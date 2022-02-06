@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InputBox = ({socket, focusroom, me, focus_msgs}) => {
+const InputBox = ({ focusroom, me, focus_msgs}) => {
   const classes = useStyles();
  
   const [datas, setData] = useState({
@@ -50,17 +50,11 @@ const InputBox = ({socket, focusroom, me, focus_msgs}) => {
   };
 
 
-
-
   const handleSumbit = async (e) => {
     e.preventDefault();
-    console.log('[표시]InputBox.js',datas)
-
-
-//    socket.emit('chatting', datas);
-cm_msgs_update(focusroom,[...focus_msgs,datas])
-
-    // setData({ ...datas, msg: "" });
+    console.log('[표시]InputBox.js',datas);
+    cm_msgs_update(focusroom,[...focus_msgs,datas]);
+    setData({ ...datas, msg: '' });
   };
 
 

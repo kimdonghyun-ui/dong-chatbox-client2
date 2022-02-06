@@ -18,11 +18,9 @@ import {
 
 /* redux */
 import { connect } from "react-redux";
-import { rx_authenticated } from "../modules/members";
 
 import { makeStyles } from "@material-ui/core/styles";
 /* function */
-import { cm_logout } from "../helpers/common";
 // import FriendAdd from "./FriendAdd";
 
 const useStyles = makeStyles((theme) => ({
@@ -88,9 +86,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Message = ({socket, focusroom, me, rx_authenticated, focus_msgs, tabindex}) => {
+const Message = ({socket, focusroom, me, focus_msgs, tabindex, btn_logout}) => {
     const classes = useStyles();
-  // const [lists, setList] = useState([]);
 
   const intervalId = useRef(null);
 
@@ -101,10 +98,8 @@ const Message = ({socket, focusroom, me, rx_authenticated, focus_msgs, tabindex}
     intervalId.current.scrollTo(0, scroll);
   }
 
-
-
   useEffect(() => {
-    focusroom > 0 && socket.emit('joinRoom', focusroom);
+    // focusroom > 0 && socket.emit('joinRoom', focusroom);
 
     return () => {
       socket.emit('leaveRoom', focusroom);
@@ -113,22 +108,10 @@ const Message = ({socket, focusroom, me, rx_authenticated, focus_msgs, tabindex}
   }, [tabindex]);
 
   useEffect(() => {
-
-    
-    // socket.on('broadcast', function(msg){
-    //     setList(lists => [...lists, msg]);
-    // console.log('broadcast')
-        
-    // });
     scrollToMyRef();
 
-    return () => {
+  }, [focus_msgs]);
 
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [focus_msgs]);
-
-    // console.log(lists)
 
 
   return (
@@ -138,7 +121,7 @@ const Message = ({socket, focusroom, me, rx_authenticated, focus_msgs, tabindex}
       <div className={classes.title}>
         {me.username}
         <Button onClick={() => {
-            cm_logout(rx_authenticated,me);
+            btn_logout();
           }}>로그아웃</Button>
       </div>
       <ListSubheader
@@ -237,14 +220,13 @@ const mapStateToProps = (state) => ({
   focusroom: state.chats.focusroom,
   me: state.members.me,
   focus_msgs: state.chats.focus_msgs,
-  // me: state.chats.me,
   tabindex: state.chats.tabindex
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  rx_authenticated: (val) => {
-    dispatch(rx_authenticated(val));
-  },
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   rx_authenticated: (val) => {
+//     dispatch(rx_authenticated(val));
+//   },
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Message);
+export default connect(mapStateToProps, null)(Message);

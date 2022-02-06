@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from "react";
+import React,{ useEffect } from "react";
 
 /* redux */
 import { connect } from "react-redux";
@@ -9,12 +9,12 @@ import { rx_all_users, rx_authenticated } from "../modules/members";
 import { CssBaseline } from "@material-ui/core";
 
 /* function */
-import { socket, cm_all_users, cm_all_rooms, cm_all_msgs, cm_logout, cm_msgs_update } from "../helpers/common";
+import { socket, cm_all_users, cm_all_rooms, cm_logout } from "../helpers/common";
 
 /* components */
 import TabBox from "../components/TabBox";
-import FrienList from "../components/FrienList";
-import Room from "../components/Room";
+import FrienList2 from "../components/FrienList2";
+import RoomList from "../components/RoomList";
 import Message from "../components/Message";
 import InputBox from "../components/InputBox";
 
@@ -22,6 +22,7 @@ import InputBox from "../components/InputBox";
 
 const Home = ({ rx_all_users, rx_all_rooms, rx_all_msgs,  me, rx_authenticated, focus_msgs, rx_focus_msgs, focusroom }) => {
 
+  
     useEffect(() => {
 
         cm_all_users(); //api에 users 데이터 요청 후 성공시 소켓에 전달 (user_update로 되돌려받는다.)
@@ -37,53 +38,37 @@ const Home = ({ rx_all_users, rx_all_rooms, rx_all_msgs,  me, rx_authenticated, 
         });
 
 
-        socket.on('broadcast', function(data){
-          
-          console.log('msg',data)
-          rx_focus_msgs(data)
-          // setDatas(msg)
+        socket.on('broadcast', function(data){ 
+          console.log('msg',data);
+          rx_focus_msgs(data);
         });
 
 
-
-        // cm_all_msgs(); //api에 rooms 데이터 요청 후 성공시 소켓에 전달 (room_update로 되돌려받는다.)
-        // socket.on('all_msgs_update', function(msgs) {
-        //   rx_all_msgs(msgs);
-        // });
-
         //브라우져 종료 및 새로고침시 발생
-        // window.addEventListener('beforeunload', (event) => { 
-        //     event.preventDefault();
-        //     event.returnValue = '';
-        //     cm_logout(rx_authenticated,me);
-        // });
+        window.addEventListener('beforeunload', (event) => { 
+            event.preventDefault();
+            event.returnValue = '';
+            cm_logout(rx_authenticated,me);
+        });
     
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[]);
 
-      const [datas, setDatas] = useState(null);
+
+  const btn_logout = () => cm_logout(rx_authenticated,me);
 
 
-
-      useEffect(() => {
-
-          (focusroom > 0 && datas) && cm_msgs_update(focusroom,rx_focus_msgs,[...focus_msgs,datas]);
-
-        
-        
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      },[datas]);
     
     return (
         <React.Fragment>
             <CssBaseline />
             <TabBox
                 content={[
-                    <FrienList />,
-                    <Room socket={socket} />,
+                    <FrienList2 btn_logout={btn_logout} />,
+                    <RoomList socket={socket} btn_logout={btn_logout} />,
                     <>
-                        <Message socket={socket} />
-                        <InputBox socket={socket} />
+                        <Message socket={socket} btn_logout={btn_logout} />
+                        <InputBox />
                     </>
                 ]}
             />

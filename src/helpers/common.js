@@ -288,7 +288,7 @@ const newRoom = async (me,you,all_rooms,all_msgs,rx_focusroom) => {
       socket.emit('all_rooms', all_rooms);
 
       rx_focusroom(data.data.id);
-      // socket.emit('joinRoom', data.data.id);
+      socket.emit('joinRoom', data.data.id);
 
 
   } catch (e) {
@@ -327,7 +327,7 @@ export function cm_room_add(me, you, all_rooms, all_msgs, rx_tabindex, rx_focusr
 
     //방이 있으니 rx_focusroom에 현재 바라보고있는 방 이름만 셋 해주기
     rx_focusroom(clone_allroomlist2[0].id);
-    // socket.emit('joinRoom', clone_allroomlist2[0].id);
+    socket.emit('joinRoom', clone_allroomlist2[0].id);
     let all_rooms_focus = all_rooms.filter((item) => item.id === clone_allroomlist2[0].id )[0]
 
 

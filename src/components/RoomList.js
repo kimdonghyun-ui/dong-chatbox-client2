@@ -80,6 +80,7 @@ const RoomList = ({ socket, btn_logout, all_rooms, me, rx_focusroom, rx_tabindex
       rx_tabindex(2);
       // focusroom > 0 && socket.emit('joinRoom', focusroom);
     }else{
+      rx_focusroom(room_id);
       rx_tabindex(2);
     };
 

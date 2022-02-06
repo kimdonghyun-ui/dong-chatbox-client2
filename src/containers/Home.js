@@ -2,7 +2,7 @@ import React,{ useEffect } from "react";
 
 /* redux */
 import { connect } from "react-redux";
-import { rx_all_rooms, rx_all_msgs, rx_focus_msgs } from "../modules/chats";
+import { rx_all_rooms, rx_focus_msgs } from "../modules/chats";
 import { rx_all_users, rx_authenticated } from "../modules/members";
 
 /* material-ui */
@@ -20,7 +20,7 @@ import InputBox from "../components/InputBox";
 
 
 
-const Home = ({ rx_all_users, rx_all_rooms, rx_all_msgs,  me, rx_authenticated, focus_msgs, rx_focus_msgs, focusroom }) => {
+const Home = ({ rx_all_users, rx_all_rooms,  me, rx_authenticated, rx_focus_msgs }) => {
 
   
     useEffect(() => {
@@ -78,7 +78,6 @@ const Home = ({ rx_all_users, rx_all_rooms, rx_all_msgs,  me, rx_authenticated, 
 
 const mapStateToProps = (state) => ({
   me: state.members.me,
-  focusroom: state.chats.focusroom,
   focus_msgs: state.chats.focus_msgs
 });
 
@@ -88,9 +87,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     rx_all_rooms: (val) => {
         dispatch(rx_all_rooms(val));
-    },
-    rx_all_msgs: (val) => {
-        dispatch(rx_all_msgs(val));
     },
     rx_authenticated: (val) => {
         dispatch(rx_authenticated(val));

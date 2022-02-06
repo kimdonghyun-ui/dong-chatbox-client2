@@ -382,7 +382,7 @@ export const cm_roomuser_update = async (all_rooms,room_id,new_user) => {
 //##########################################################
 //########### 메시지 업데이트(입력하고 전송 날리는거) ################
 //##########################################################
-export const cm_msgs_update = async (focusroom,new_msgs) => {
+export const cm_msgs_update = async (focusroom,new_msgs,all_rooms) => {
   try {
     await axios.put(api_url+'api/rooms/'+focusroom, {
       "data":
@@ -390,10 +390,12 @@ export const cm_msgs_update = async (focusroom,new_msgs) => {
         "list":new_msgs
       }
     });
-
+    all_rooms.map((i) => i.id === focusroom && (i.attributes.list = new_msgs) )
+    // console.log('all_rooms',all_rooms)
     // rx_focus_msgs(new_msgs)
     // console.log('cm_msgs_update 소켓에 알리기',data.data)
     socket.emit('chatting', focusroom,new_msgs);
+    socket.emit('all_rooms',all_rooms );
   } catch (e) {
     console.log('cm_msgs_update 실패');
     console.log(e);

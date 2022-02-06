@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InputBox = ({ focusroom, me, focus_msgs}) => {
+const InputBox = ({ focusroom, me, focus_msgs, all_rooms}) => {
   const classes = useStyles();
  
   const [datas, setData] = useState({
@@ -53,7 +53,7 @@ const InputBox = ({ focusroom, me, focus_msgs}) => {
   const handleSumbit = async (e) => {
     e.preventDefault();
     console.log('[표시]InputBox.js',datas);
-    cm_msgs_update(focusroom,[...focus_msgs,datas]);
+    cm_msgs_update(focusroom,[...focus_msgs,datas],all_rooms);
     setData({ ...datas, msg: '' });
   };
 
@@ -99,7 +99,9 @@ const InputBox = ({ focusroom, me, focus_msgs}) => {
 const mapStateToProps = (state) => ({
   focusroom: state.chats.focusroom,
   me: state.members.me,
-  focus_msgs: state.chats.focus_msgs
+  focus_msgs: state.chats.focus_msgs,
+  all_rooms: state.chats.all_rooms,
+
 });
 
 // const mapDispatchToProps = (dispatch) => ({

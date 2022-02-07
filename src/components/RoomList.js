@@ -136,7 +136,7 @@ const RoomList = ({ socket, btn_logout, all_rooms, me, rx_focusroom, rx_tabindex
               btn_logout();
             }}>로그아웃</Button>
         </div>
-        <ListSubheader component="div">전체 친구 리스트</ListSubheader>
+        <ListSubheader component="div">나의 방 리스트</ListSubheader>
 
         <List className={classes.list}>
           {rooms.length > 0 ? (

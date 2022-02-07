@@ -66,9 +66,26 @@ function SignUp({ rx_authenticated, rx_loading1, rx_me }) {
     password: "",
   });
 
+
+  const email_check = (email) => {
+    var regex=/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    return (email !== '' && email !== 'undefined' && regex.test(email));
+  }
+
+
+  const [error_email, setError_email] = useState([false,'']);
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setMember({ ...member, [name]: value });
+    if (!email_check(member.email)){
+      setError_email([true,'Email형식을 제대로 입력부탁드립니다.']);
+      console.log("not email address");
+    }else{
+      setError_email([false,'']);
+    }
+
+
   };
 
   const handleOnSubmit = async (e) => {
@@ -92,6 +109,7 @@ function SignUp({ rx_authenticated, rx_loading1, rx_me }) {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                error={error_email[0]}
                 variant="outlined"
                 required
                 fullWidth
@@ -102,6 +120,7 @@ function SignUp({ rx_authenticated, rx_loading1, rx_me }) {
                 value={member.email}
                 onChange={handleOnChange}
               />
+              <p style={{color:'red'}}>{error_email[1]}</p>
             </Grid>
             <Grid item xs={12}>
               <TextField

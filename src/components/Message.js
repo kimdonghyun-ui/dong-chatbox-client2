@@ -205,7 +205,7 @@ const Message = ({socket, focusroom, me, focus_msgs, tabindex, btn_logout}) => {
 
           ))
         ) : (
-          <li>리스트가없습니다.</li>
+          <li>{focusroom > 0 ? '리스트가 없습니다.' : '방을 선택해주세요'}</li>
         )}
       </List>
 

@@ -77,7 +77,7 @@ const FrienList = ({ btn_logout, all_users, me, all_rooms, all_msgs, rx_tabindex
             }}>로그아웃</Button>
         </div>
 
-        <ListSubheader component="div">전체 친구 리스트</ListSubheader>
+        <ListSubheader component="div">나의 방 리스트</ListSubheader>
 
         <List className={classes.list}>
           {all_users.length > 0 ? (

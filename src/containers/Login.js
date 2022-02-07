@@ -88,7 +88,7 @@ function Login({ rx_authenticated, rx_loading1, rx_me }) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          로그인
+          동현이의 채팅방
         </Typography>
         <form className={classes.form} onSubmit={handleOnSubmit} noValidate>
           <TextField

@@ -149,7 +149,7 @@ const Message = ({socket, focusroom, me, focus_msgs, tabindex, btn_logout}) => {
                 style={{
                   display: "flex",
                   flexDirection:
-                    "me.id" === data.me_id
+                    me.id === data.me_id
                       ? "row-reverse"
                       : "row",
                   textAlign:

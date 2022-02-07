@@ -83,7 +83,7 @@ useEffect(() => {
             </StyledBadge>
           </Badge>
         </ListItemAvatar>
-        <ListItemText primary={name} secondary="1:1대화방" />
+        <ListItemText primary={name} secondary={room.attributes.roomuser.length > 2 ? "단체 대화방" : "1:1대화방" } />
       </ListItem>
       <Button
         onClick={() => hendle_room_remove(room.id)}

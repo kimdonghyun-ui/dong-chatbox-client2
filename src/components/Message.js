@@ -149,18 +149,18 @@ const Message = ({socket, focusroom, me, focus_msgs, tabindex, btn_logout}) => {
                 style={{
                   display: "flex",
                   flexDirection:
-                    me.id === data.me_id
+                    me.id === data.userId
                       ? "row-reverse"
                       : "row",
                   textAlign:
-                  "me.id" === data.me_id ? "right" : "left",
+                  me.id === data.userId ? "right" : "left",
                 }}
               >
                 <ListItemAvatar
                   className={classes.listBoxItemavatar}
                   style={{
                     justifyContent:
-                        "me.id" === data.me_id
+                        me.id === data.userId
                         ? "flex-end"
                         : "flex-start",
                   }}

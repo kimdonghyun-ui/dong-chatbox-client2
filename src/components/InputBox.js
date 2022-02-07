@@ -34,6 +34,7 @@ const InputBox = ({ focusroom, me, focus_msgs, all_rooms}) => {
   const [datas, setData] = useState({
     roomName: focusroom,
     userName: me.username,
+    userId: me.id,
     msg: "",
     timestamp: Date.now(),
     notice: ""
@@ -43,6 +44,7 @@ const InputBox = ({ focusroom, me, focus_msgs, all_rooms}) => {
     setData({
       roomName: focusroom,
       userName: me.username,
+      userId: me.id,
       msg: e.target.value,
       timestamp: Date.now(),
       notice: ""

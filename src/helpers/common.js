@@ -363,8 +363,7 @@ export const cm_roomuser_update = async (all_rooms,room_id,new_user) => {
     console.log('cm_roomuser_update 소켓에 알리기',data.data)
     //socket.emit('all_msgs', all_msgs);
 
-    all_rooms.map((i) => i.id === room_id ? i = data.data : i )
-    socket.emit('all_rooms', all_rooms);
+    socket.emit('all_rooms', all_rooms.map((i) => i.id === room_id ? i = data.data : i ));
 
   } catch (e) {
     console.log('cm_roomuser_update 실패');

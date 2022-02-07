@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 /* function */
-// import FriendAdd from "./FriendAdd";
+import FriendAdd from "./FriendAdd";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,6 +134,8 @@ const Message = ({socket, focusroom, me, focus_msgs, tabindex, btn_logout}) => {
       >
         채팅방
 
+      {focusroom > 0 && <FriendAdd />}
+      
       </ListSubheader>
       <List className={classes.listBox} ref={intervalId}>
         {focus_msgs.length > 0 ? (

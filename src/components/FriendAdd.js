@@ -28,21 +28,25 @@ const useStyles = makeStyles({
 
 function SimpleDialog(props) {
   const classes = useStyles();
-  const { onClose, selectedValue, open, data, focusroom, me, all_rooms } = props;
+  const { onClose, selectedValue, open, data, focusroom, all_rooms } = props;
 
   const handleClose = () => {
     onClose(selectedValue);
     console.log("까르르르궁", data);
   };
 
-  const handleListItemClick = (id) => {
+  const handleListItemClick = (user_id) => {
     const gogo = all_rooms.filter((i) => i.id === focusroom)[0];
             let hello = gogo.attributes.roomuser;
-            if(!hello.includes(id)){
-                
+            
+            console.log('###############',hello.includes(user_id))
+            if(hello.includes(user_id)){
+              alert('이미 추가된 사용자입니다.')
+            }else{
+                              
                 // hello.push(id)
-                console.log(id,'추가')
-                cm_roomuser_update(all_rooms,focusroom,[...hello,id]);
+                console.log(user_id,'추가')
+                cm_roomuser_update(all_rooms,focusroom,[...hello,user_id]);
             }
 
     onClose(false);
